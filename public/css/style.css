@@ -1,0 +1,8 @@
+body{
+    background:lightsalmon
+}
+
+ nav {
+     background: blue;
+     display: flex;
+ }

@@ -20,6 +20,7 @@ router.post("/login",(req,res)=>{
         }
     }).then(userData=>{
         if(!userData){
+            req.session.destroy();
             res.status(404).send("no such user")
         } else {
           if(bcrypt.compareSync(req.body.password,userData.password)){
@@ -29,6 +30,7 @@ router.post("/login",(req,res)=>{
               }
               res.json(userData);
           }else {
+              req.session.destroy();
               res.status(401).send("wrong password bro")
           }
         }
@@ -45,6 +47,11 @@ router.get("/secretclub",(req,res)=>{
     } else {
         res.status(401).send("login first you knucklehead")
     }
+})
+
+router.get('/logout',(req,res)=>{
+    req.session.destroy();
+    res.redirect('/')
 })
 
 

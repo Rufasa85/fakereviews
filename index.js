@@ -4,6 +4,7 @@ const session = require('express-session');
 // =============================================================
 var app = express();
 var PORT = process.env.PORT || 8080;
+require("dotenv").config();
 
 
 // Requiring our models for syncing
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(session({
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -29,12 +30,14 @@ var exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.get('/',(req,res)=>{
-    res.send("stuff");
-})
-
 const userRoutes = require("./controllers/userController");
 app.use(userRoutes);
+
+const frontEndRoutes = require("./controllers/frontEndController");
+app.use(frontEndRoutes);
+
+const reviewRoutes = require("./controllers/reviewController");
+app.use("/api/reviews",reviewRoutes);
 
 db.sequelize.sync({ force: false }).then(function() {
     app.listen(PORT, function() {
