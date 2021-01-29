@@ -3,7 +3,22 @@ const router = express.Router();
 const db = require('../models');
 
 router.get("/",(req,res)=>{
-    db.Review.findAll().then(data=>{
+    db.Review.findAll({
+        include:[db.Platform]
+    }).then(data=>{
+        res.json(data)
+    }).catch(err=>{
+        res.status(500).json(err);
+    })
+})
+
+router.get('/platform/:id',(req,res)=>{
+    db.Platform.findOne({
+        where:{
+            id:req.params.id
+        },
+        include:[db.Review]
+    }).then(data=>{
         res.json(data)
     }).catch(err=>{
         res.status(500).json(err);
@@ -36,8 +51,13 @@ router.post('/',(req,res)=>{
             review:req.body.review,
             score:req.body.score,
             UserId:req.session.user.id
-        }).then(data=>{
-            res.json(data)
+        }).then(newReview=>{
+            const platformsArr = req.body.platforms.split(",");
+            platformsArr.forEach(id=>{
+                newReview.addPlatform(id);
+            })
+            console.log(req.body.platforms);
+            res.json(newReview)
         }).catch(err=>{
             res.status(500).json(err)
         })

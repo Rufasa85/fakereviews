@@ -39,6 +39,9 @@ app.use(frontEndRoutes);
 const reviewRoutes = require("./controllers/reviewController");
 app.use("/api/reviews",reviewRoutes);
 
+const platformRoutes = require("./controllers/platformController");
+app.use("/api/platforms",platformRoutes);
+
 db.sequelize.sync({ force: false }).then(function() {
     app.listen(PORT, function() {
     console.log('App listening on PORT ' + PORT);

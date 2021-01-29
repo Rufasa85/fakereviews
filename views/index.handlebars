@@ -1,8 +1,19 @@
 <h1>Reviews!</h1>
 {{#each reviews}}
-    <h3>{{title}} by {{User.username}}</h3>
+    <h3>{{title}} by <a href= "/user/{{User.username}}">{{User.username}}</a></h3>
     <p>{{review}}</p>
     <p>score:{{score}}</p>
+    <h4>Available on:</h4>
+    {{#each Platforms}}
+    <a href="/platform/{{name}}">
+        <button>{{name}}</button>
+    </a>
+    {{/each}}
+    {{#if isMine}}
+    <h4>Admin dashboard!</h4>
+        <button>Edit</button>
+        <button>Delete</button>
+    {{/if}}
     
 
 {{/each}}

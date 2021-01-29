@@ -1,0 +1,12 @@
+<h1>Reviews for {{platform}}</h1>
+{{#each reviews}}
+    <h3>{{title}} by {{User.username}}</h3>
+    <p>{{review}}</p>
+    <p>score:{{score}}</p>
+    {{#if isMine}}
+        <button>Edit</button>
+        <button>Delete</button>
+    {{/if}}
+    
+
+{{/each}}
